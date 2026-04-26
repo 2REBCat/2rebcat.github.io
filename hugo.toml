@@ -1,0 +1,10 @@
+baseURL = "https://2rebcat.github.io/"
+languageCode = "ko-kr"
+title = "2RebCat | Knowledge Archive"
+theme = "2rebcat-academic"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "robotsTXT"]
+
+[params]
+  description = "2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs."
+  author = "2RebCat"
+  footer = "© 2026 2RebCat. Blog-first knowledge archive built with Hugo."

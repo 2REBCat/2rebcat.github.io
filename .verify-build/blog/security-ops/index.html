@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs." />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/main.min.ff8e9f0f171521e24e0f4547a9d69eee57ec5b723e79f5aba74c8e88d1513285.css" integrity="sha256-/46fDxcVIeJOD0VHqdae7lfsW3I&#43;efWrp0yOiNFRMoU=" />
+  <title>보안·운영 메모 | 2RebCat | Knowledge Archive</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="/">홈</a>
+        <a class="nav-link" href="/blog/">블로그</a>
+        <a class="nav-link" href="/about/">소개</a>
+      </nav>
+    </header>
+
+    
+
+
+
+<main class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">TOPIC</p>
+          <h1>보안·운영 메모</h1>
+        </div>
+      </div>
+      
+      <div class="intro-copy">
+        <p>서비스를 오래 운영하려면 구현뿐 아니라 배포와 점검 관점도 같이 가져가야 합니다. 이 폴더는 그런 메모를 정리하는 공간입니다.</p>
+
+      </div>
+      
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-2">
+    <div class="article-list">
+      
+      <article class="article-item">
+        <div class="article-meta">
+          <span>2026.04.25</span>
+        </div>
+        <h3><a href="/blog/security-ops/static-site-checklist/">정적 사이트 운영 전에 확인할 최소 체크리스트</a></h3>
+        <p>정적 사이트를 배포하기 전에 링크, 자산, 헤더, 구조를 어떤 순서로 확인할지 짧게 정리한 메모입니다.</p>
+      </article>
+      
+    </div>
+  </section>
+</main>
+
+
+
+    <footer class="site-footer">
+      <p>© 2026 2RebCat. Blog-first knowledge archive built with Hugo.</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

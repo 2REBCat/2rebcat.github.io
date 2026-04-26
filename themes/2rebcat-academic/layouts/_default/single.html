@@ -1,0 +1,17 @@
+{{ define "main" }}
+<main class="post-shell reveal">
+  <header class="post-header">
+    <p class="section-kicker">Post</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.summary }}<p class="hero-support">{{ . }}</p>{{ end }}
+    <div class="post-meta">
+      <span class="card-label">{{ .Date.Format "2006.01.02" }}</span>
+      {{ with .CurrentSection }}<span class="card-label">{{ .Title }}</span>{{ end }}
+    </div>
+  </header>
+
+  <article class="post-content">
+    {{ .Content }}
+  </article>
+</main>
+{{ end }}

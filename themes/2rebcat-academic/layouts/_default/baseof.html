@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="{{ .Params.description | default site.Params.description }}" />
+  <link rel="icon" type="image/jpeg" href="{{ "logo.jpg" | relURL }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  {{ $styles := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" />
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="{{ "/" | relURL }}">홈</a>
+        <a class="nav-link" href="{{ "/blog/" | relURL }}">블로그</a>
+        <a class="nav-link" href="{{ "/about/" | relURL }}">소개</a>
+      </nav>
+    </header>
+
+    {{ block "main" . }}{{ end }}
+
+    <footer class="site-footer">
+      <p>{{ site.Params.footer }}</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

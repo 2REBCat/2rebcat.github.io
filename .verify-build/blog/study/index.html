@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs." />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/main.min.ff8e9f0f171521e24e0f4547a9d69eee57ec5b723e79f5aba74c8e88d1513285.css" integrity="sha256-/46fDxcVIeJOD0VHqdae7lfsW3I&#43;efWrp0yOiNFRMoU=" />
+  <title>학습 노트 | 2RebCat | Knowledge Archive</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="/">홈</a>
+        <a class="nav-link" href="/blog/">블로그</a>
+        <a class="nav-link" href="/about/">소개</a>
+      </nav>
+    </header>
+
+    
+
+
+
+<main class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">TOPIC</p>
+          <h1>학습 노트</h1>
+        </div>
+      </div>
+      
+      <div class="intro-copy">
+        <p>개념 정리, 구현 실험, 디버깅 메모처럼 다시 찾아볼 가능성이 큰 내용을 모아 두는 공간입니다. 짧은 기록이라도 나중에 흐름을 따라가기 쉽도록 정리합니다.</p>
+
+      </div>
+      
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-2">
+    <div class="article-list">
+      
+      <article class="article-item">
+        <div class="article-meta">
+          <span>2026.04.26</span>
+        </div>
+        <h3><a href="/blog/study/input-validation-notes/">폼 입력 검증을 볼 때 먼저 확인하는 기준</a></h3>
+        <p>입력 검증을 구현하거나 점검할 때 먼저 보는 항목을 짧게 정리한 메모입니다.</p>
+      </article>
+      
+    </div>
+  </section>
+</main>
+
+
+
+    <footer class="site-footer">
+      <p>© 2026 2RebCat. Blog-first knowledge archive built with Hugo.</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

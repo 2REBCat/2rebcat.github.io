@@ -1,0 +1,141 @@
+{{ define "main" }}
+{{ $recentTopicScratch := newScratch }}
+{{ $recentTopicScratch.Set "topics" (slice) }}
+{{ $recentTopicScratch.Set "seen" (slice) }}
+{{ range where site.RegularPages.ByLastmod.Reverse "Section" "blog" }}
+  {{ with .CurrentSection }}
+    {{ $topicKey := .RelPermalink }}
+    {{ if not (in ($recentTopicScratch.Get "seen") $topicKey) }}
+      {{ $recentTopicScratch.Set "topics" (($recentTopicScratch.Get "topics") | append .) }}
+      {{ $recentTopicScratch.Set "seen" (($recentTopicScratch.Get "seen") | append $topicKey) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $recentTopics := first 3 ($recentTopicScratch.Get "topics") }}
+<main id="about" class="home-layout">
+  <section class="hero-grid reveal">
+    <div class="hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">{{ .Title }}</p>
+          <p class="hero-role">{{ .Params.role }}</p>
+          <p class="status-line">{{ .Params.status }}</p>
+        </div>
+      </div>
+      <h1>{{ .Params.summary_title }}</h1>
+      {{ if .Content }}
+      <div class="intro-copy">
+        {{ if .Content }}{{ .Content }}{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section id="focus" class="section-block reveal delay-2">
+    <div class="section-heading">
+      <p class="section-kicker">{{ .Params.focus_kicker | default "Focus" }}</p>
+      <h2>{{ .Params.focus_title | default "지금 이 페이지에서 먼저 보여주고 싶은 것" }}</h2>
+    </div>
+    <div class="principles-grid">
+      {{ range .Params.focus }}
+      <article class="principle-card">
+        <h3>{{ .title }}</h3>
+        <p>{{ .description }}</p>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-2">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-kicker">{{ .Params.overview_kicker | default "Overview" }}</p>
+        <h2>{{ .Params.overview_title | default "기본 정보와 관심 분야" }}</h2>
+      </div>
+    </div>
+    <div class="overview-grid">
+      <article class="overview-card">
+        <p class="card-label">{{ .Params.education_label | default "Education" }}</p>
+        <ul class="detail-list">
+          {{ range .Params.education }}
+          <li>
+            <span class="detail-label">{{ .label }}</span>
+            <strong>{{ .value }}</strong>
+          </li>
+          {{ end }}
+        </ul>
+      </article>
+      <article class="overview-card">
+        <p class="card-label">{{ .Params.interests_label | default "Interests" }}</p>
+        <div class="tag-list">
+          {{ range .Params.interests }}
+          <span>{{ . }}</span>
+          {{ end }}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="timeline" class="section-block reveal delay-3">
+    <div class="section-heading">
+      <p class="section-kicker">{{ .Params.timeline_kicker | default "Journey" }}</p>
+      <h2>{{ .Params.timeline_title | default "학업과 실무 흐름" }}</h2>
+    </div>
+    <div class="timeline-list">
+      {{ range .Params.timeline }}
+      <article class="timeline-item">
+        <div class="timeline-period-wrap">
+          <span class="timeline-period">{{ .period }}</span>
+        </div>
+        <div class="timeline-body">
+          <h3>{{ .title }}</h3>
+          <p>{{ .description }}</p>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-4">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-kicker">{{ .Params.archive_kicker | default "Archive" }}</p>
+        <h2>{{ .Params.archive_title | default "최근 글이 추가된 주제" }}</h2>
+      </div>
+      <a class="inline-link inline-link-minimal" href="{{ "/blog/" | relURL }}">더 보기</a>
+    </div>
+    {{ if $recentTopics }}
+    <div class="topic-grid">
+      {{ range $recentTopics }}
+      <article class="topic-card">
+        <p class="card-label">{{ $.Params.archive_topic_label | default "Topic" }}</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Params.description | default .Summary }}</p>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+    <article class="empty-state-panel">
+      <p class="section-kicker">Preparing</p>
+      <h3>아직 주제 카드에 표시할 글이 없습니다</h3>
+      <p>주제별 글이 추가되면 최근에 업데이트된 주제부터 이 영역에 표시됩니다.</p>
+    </article>
+    {{ end }}
+  </section>
+
+  <section id="contact" class="section-block reveal delay-4">
+    <article class="contact-panel">
+      <div>
+        <p class="section-kicker">{{ .Params.contact_kicker | default "Contact" }}</p>
+        <h2>{{ .Params.contact_title }}</h2>
+      </div>
+      <div class="contact-actions">
+        <a class="button primary" href="mailto:{{ .Params.email }}">{{ .Params.contact_email_button_text | default "메일 보내기" }}</a>
+        {{ range .Params.social_links }}
+        <a class="button secondary social-link" href="{{ .url }}" target="_blank" rel="noreferrer" data-platform="{{ .type | lower }}">{{ .label | default (replaceRE "https?://" "" .url) }}</a>
+        {{ end }}
+      </div>
+    </article>
+  </section>
+</main>
+{{ end }}

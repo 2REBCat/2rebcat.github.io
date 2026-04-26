@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs." />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/main.min.ff8e9f0f171521e24e0f4547a9d69eee57ec5b723e79f5aba74c8e88d1513285.css" integrity="sha256-/46fDxcVIeJOD0VHqdae7lfsW3I&#43;efWrp0yOiNFRMoU=" />
+  <title>UI 밀도 스모크 테스트 | 2RebCat | Knowledge Archive</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="/">홈</a>
+        <a class="nav-link" href="/blog/">블로그</a>
+        <a class="nav-link" href="/about/">소개</a>
+      </nav>
+    </header>
+
+    
+<main class="post-shell reveal">
+  <header class="post-header">
+    <p class="section-kicker">Post</p>
+    <h1>UI 밀도 스모크 테스트</h1>
+    <p class="hero-support">카드와 목록 항목이 늘어났을 때 읽기 흐름이 유지되는지 빠르게 확인하기 위한 테스트 메모입니다.</p>
+    <div class="post-meta">
+      <span class="card-label">2026.04.24</span>
+      <span class="card-label">빌드 로그</span>
+    </div>
+  </header>
+
+  <article class="post-content">
+    <p>콘텐츠가 조금 더 늘어난 상태에서 카드 레이아웃과 최근 기록 목록이 과하게 복잡해지지 않는지 보는 용도의 테스트 문서입니다.</p>
+
+  </article>
+</main>
+
+
+    <footer class="site-footer">
+      <p>© 2026 2RebCat. Blog-first knowledge archive built with Hugo.</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

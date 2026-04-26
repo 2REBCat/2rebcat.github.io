@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs." />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/main.min.ff8e9f0f171521e24e0f4547a9d69eee57ec5b723e79f5aba74c8e88d1513285.css" integrity="sha256-/46fDxcVIeJOD0VHqdae7lfsW3I&#43;efWrp0yOiNFRMoU=" />
+  <title>상단 네비게이션을 줄일 때 보는 기준 | 2RebCat | Knowledge Archive</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="/">홈</a>
+        <a class="nav-link" href="/blog/">블로그</a>
+        <a class="nav-link" href="/about/">소개</a>
+      </nav>
+    </header>
+
+    
+<main class="post-shell reveal">
+  <header class="post-header">
+    <p class="section-kicker">Post</p>
+    <h1>상단 네비게이션을 줄일 때 보는 기준</h1>
+    <p class="hero-support">상단 메뉴 항목을 줄일 때 무엇을 남기고 무엇을 빼야 하는지 판단 기준을 정리한 메모입니다.</p>
+    <div class="post-meta">
+      <span class="card-label">2026.04.26</span>
+      <span class="card-label">웹 개발 메모</span>
+    </div>
+  </header>
+
+  <article class="post-content">
+    <p>상단 네비게이션은 많을수록 편한 것이 아니라, 가장 자주 이동하는 경로만 남아 있을 때 더 명확해집니다.</p>
+<h2 id="남길-항목">남길 항목</h2>
+<ul>
+<li>사이트의 첫 목적지</li>
+<li>사용자 소개나 정체성을 설명하는 핵심 페이지</li>
+</ul>
+<h2 id="줄이는-기준">줄이는 기준</h2>
+<ol>
+<li>본문에서 충분히 도달 가능한 링크인지</li>
+<li>같은 의미의 항목이 중복으로 존재하는지</li>
+<li>방문자가 첫 화면에서 바로 쓸 가능성이 높은지</li>
+</ol>
+
+  </article>
+</main>
+
+
+    <footer class="site-footer">
+      <p>© 2026 2RebCat. Blog-first knowledge archive built with Hugo.</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

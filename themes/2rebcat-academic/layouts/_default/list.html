@@ -1,0 +1,45 @@
+{{ define "main" }}
+<main class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">{{ .CurrentSection.Title }}</p>
+          <p class="hero-role">주제별 기록 모음</p>
+        </div>
+      </div>
+      <p class="section-kicker">Topic</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.description }}<div class="intro-copy"><p>{{ . }}</p></div>{{ end }}
+      {{ if .Content }}
+      <div class="intro-copy">{{ .Content }}</div>
+      {{ end }}
+      <div class="cta-row">
+        <a class="button primary" href="{{ "/blog/" | relURL }}">전체 아카이브</a>
+        <a class="button secondary" href="{{ "/about/" | relURL }}">포트폴리오 보기</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-2">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-kicker">Posts</p>
+        <h2>{{ .Title }} 글 목록</h2>
+      </div>
+      <p class="section-note">이 섹션에 있는 모든 글은 같은 폴더 아래의 Markdown 파일로 관리됩니다.</p>
+    </div>
+    <div class="article-list">
+      {{ range .RegularPages.ByDate.Reverse }}
+      <article class="article-item">
+        <div class="article-meta">
+          <span>{{ .Date.Format "2006.01.02" }}</span>
+        </div>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{ with .Params.summary }}<p>{{ . }}</p>{{ else }}{{ with .Summary }}<p>{{ . }}</p>{{ end }}{{ end }}
+      </article>
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}

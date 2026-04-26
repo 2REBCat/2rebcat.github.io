@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs." />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="/css/main.min.ff8e9f0f171521e24e0f4547a9d69eee57ec5b723e79f5aba74c8e88d1513285.css" integrity="sha256-/46fDxcVIeJOD0VHqdae7lfsW3I&#43;efWrp0yOiNFRMoU=" />
+  <title>Archive | 2RebCat | Knowledge Archive</title>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header" data-site-header>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="nav-link" href="/">홈</a>
+        <a class="nav-link" href="/blog/">블로그</a>
+        <a class="nav-link" href="/about/">소개</a>
+      </nav>
+    </header>
+
+    
+
+
+
+<main id="blog-home" class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">Archive</p>
+          <p class="hero-role">읽고 다시 찾기 쉬운 기술 기록 공간</p>
+        </div>
+      </div>
+      <p class="section-kicker">Knowledge Base</p>
+      <h1>주제별 전체 아카이브</h1>
+      
+      <div class="intro-copy">
+        <p>이 공간은 블로그 전체를 훑어보는 아카이브입니다. 주제별 기록을 가나다 순으로 한 번에 확인할 수 있습니다.</p>
+<p>공부 노트, 보안·운영 메모처럼 서로 다른 성격의 글도 흐름이 끊기지 않도록 같은 아카이브 안에서 정리합니다.</p>
+
+      </div>
+      
+    </div>
+  </section>
+
+  <section id="topics" class="section-block reveal delay-2">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-kicker">Topics</p>
+        <h2>전체 주제 목록</h2>
+      </div>
+    </div>
+
+    
+    <div class="topic-grid">
+      
+      <article class="topic-card">
+        <p class="section-kicker">주제</p>
+        <h3><a href="/blog/security-ops/">보안·운영 메모</a></h3>
+        <p><p>서비스를 오래 운영하려면 구현뿐 아니라 배포와 점검 관점도 같이 가져가야 합니다. 이 폴더는 그런 메모를 정리하는 공간입니다.</p></p>
+        <div class="article-meta">
+          <span>1개 글</span>
+        </div>
+      </article>
+      
+      <article class="topic-card">
+        <p class="section-kicker">주제</p>
+        <h3><a href="/blog/build-log/">빌드 로그</a></h3>
+        <p><p>사이트 구조 변경, UI 조정, 배포 확인처럼 블로그를 직접 손보는 과정의 기록을 정리합니다.</p></p>
+        <div class="article-meta">
+          <span>3개 글</span>
+        </div>
+      </article>
+      
+      <article class="topic-card">
+        <p class="section-kicker">주제</p>
+        <h3><a href="/blog/web-engineering/">웹 개발 메모</a></h3>
+        <p><p>화면 구조, 네비게이션, 읽기 흐름처럼 사용자에게 직접 보이는 요소를 다룰 때 필요한 메모를 모아 둡니다.</p></p>
+        <div class="article-meta">
+          <span>1개 글</span>
+        </div>
+      </article>
+      
+      <article class="topic-card">
+        <p class="section-kicker">주제</p>
+        <h3><a href="/blog/study/">학습 노트</a></h3>
+        <p><p>개념 정리, 구현 실험, 디버깅 메모처럼 다시 찾아볼 가능성이 큰 내용을 모아 두는 공간입니다. 짧은 기록이라도 나중에 흐름을 따라가기 쉽도록 정리합니다.</p></p>
+        <div class="article-meta">
+          <span>1개 글</span>
+        </div>
+      </article>
+      
+    </div>
+    
+  </section>
+</main>
+
+
+
+    <footer class="site-footer">
+      <p>© 2026 2RebCat. Blog-first knowledge archive built with Hugo.</p>
+    </footer>
+  </div>
+  <script>
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      if (!header) return;
+
+      let lastScrollY = window.scrollY;
+
+      const syncHeader = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingUp = currentScrollY < lastScrollY;
+        const nearTop = currentScrollY < 24;
+
+        header.classList.toggle('is-hidden', !nearTop && !scrollingUp && currentScrollY > 120);
+        header.classList.toggle('is-condensed', currentScrollY > 24);
+
+        lastScrollY = currentScrollY;
+      };
+
+      syncHeader();
+      window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+  </script>
+</body>
+</html>

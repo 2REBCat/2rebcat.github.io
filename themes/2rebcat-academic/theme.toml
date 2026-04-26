@@ -1,0 +1,12 @@
+name = "2rebcat-academic"
+license = "MIT"
+licenselink = "https://opensource.org/licenses/MIT"
+description = "A custom academic-style Hugo theme for the 2RebCat portfolio."
+homepage = "https://2rebcat.github.io/"
+tags = ["portfolio", "academic", "personal", "minimal"]
+features = ["responsive", "single-page", "custom-theme"]
+min_version = "0.145.0"
+
+[author]
+  name = "2RebCat"
+  homepage = "https://github.com/2REBCat"

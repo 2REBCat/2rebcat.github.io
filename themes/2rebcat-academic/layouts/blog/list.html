@@ -1,0 +1,87 @@
+{{ define "main" }}
+{{ $topicSections := .Sections.ByTitle }}
+{{ $isRootArchive := eq .RelPermalink ("/blog/" | relURL) }}
+{{ if $isRootArchive }}
+<main id="blog-home" class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">{{ .Title }}</p>
+          <p class="hero-role">{{ .Params.hero_role | default "읽고 다시 찾기 쉬운 기술 기록 공간" }}</p>
+        </div>
+      </div>
+      <p class="section-kicker">{{ .Params.hero_kicker | default "Knowledge Base" }}</p>
+      <h1>{{ .Params.hero_title }}</h1>
+      {{ if .Content }}
+      <div class="intro-copy">
+        {{ .Content }}
+      </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section id="topics" class="section-block reveal delay-2">
+    <div class="section-heading split-heading">
+      <div>
+        <p class="section-kicker">{{ .Params.topics_kicker | default "Topics" }}</p>
+        <h2>{{ .Params.topics_title | default "전체 주제 목록" }}</h2>
+      </div>
+    </div>
+
+    {{ if $topicSections }}
+    <div class="topic-grid">
+      {{ range $topicSections }}
+      <article class="topic-card">
+        <p class="section-kicker">{{ $.Params.topic_card_label | default "주제" }}</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{ with .Summary }}<p>{{ . }}</p>{{ end }}
+        <div class="article-meta">
+          <span>{{ len .RegularPagesRecursive }}{{ $.Params.topic_count_suffix | default "개 글" }}</span>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+    <article class="empty-state-panel">
+      <p class="section-kicker">{{ .Params.empty_kicker | default "Preparing" }}</p>
+      <h3>{{ .Params.empty_title | default "아직 공개된 글이 없습니다" }}</h3>
+      <p>{{ .Params.empty_text | default "새로운 글이 올라오면 이 목록에서 바로 확인할 수 있습니다." }}</p>
+    </article>
+    {{ end }}
+  </section>
+</main>
+{{ else }}
+<main class="blog-layout">
+  <section class="blog-hero reveal">
+    <div class="blog-hero-copy">
+      <div class="hero-head">
+        <div class="hero-head-copy">
+          <p class="eyebrow">TOPIC</p>
+          <h1>{{ .Title }}</h1>
+        </div>
+      </div>
+      {{ if .Content }}
+      <div class="intro-copy">
+        {{ .Content }}
+      </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="section-block reveal delay-2">
+    <div class="article-list">
+      {{ range .RegularPages.ByDate.Reverse }}
+      <article class="article-item">
+        <div class="article-meta">
+          <span>{{ .Date.Format "2006.01.02" }}</span>
+        </div>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        {{ with .Params.summary }}<p>{{ . }}</p>{{ else }}{{ with .Summary }}<p>{{ . }}</p>{{ end }}{{ end }}
+      </article>
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}
+{{ end }}
