@@ -4,6 +4,9 @@ title = "2RebCat | Knowledge Archive"
 theme = "2rebcat-academic"
 disableKinds = ["taxonomy", "term", "RSS", "sitemap", "robotsTXT"]
 
+[outputs]
+  home = ["HTML", "JSON"]
+
 [params]
   description = "2RebCat knowledge archive. A blog-first site for study notes, security and operations memos, and portfolio build logs."
   author = "2RebCat"

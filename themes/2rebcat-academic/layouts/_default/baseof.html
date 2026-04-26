@@ -15,11 +15,40 @@
 <body>
   <div class="page-shell">
     <header class="site-header" data-site-header>
-      <nav class="site-nav" aria-label="Primary">
+      <a class="site-brand" href="{{ "/" | relURL }}">2REBCat</a>
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="메뉴 열기"
+        data-menu-toggle
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a class="nav-link" href="{{ "/" | relURL }}">홈</a>
         <a class="nav-link" href="{{ "/blog/" | relURL }}">블로그</a>
         <a class="nav-link" href="{{ "/about/" | relURL }}">소개</a>
       </nav>
+      <div class="site-search" data-search-root>
+        <label class="sr-only" for="site-search">사이트 검색</label>
+        <input
+          id="site-search"
+          class="search-input"
+          type="search"
+          placeholder="검색어 입력"
+          autocomplete="off"
+          spellcheck="false"
+          data-search-input
+        />
+        <div class="search-results" data-search-results hidden>
+          <p class="search-helper" data-search-helper>제목, 요약, 본문에서 검색합니다.</p>
+          <ul class="search-results-list" data-search-list></ul>
+        </div>
+      </div>
     </header>
 
     {{ block "main" . }}{{ end }}
@@ -48,6 +77,169 @@
 
       syncHeader();
       window.addEventListener('scroll', syncHeader, { passive: true });
+    })();
+
+    (() => {
+      const header = document.querySelector('[data-site-header]');
+      const toggle = document.querySelector('[data-menu-toggle]');
+      const nav = document.getElementById('site-nav');
+      if (!header || !toggle || !nav) return;
+
+      const mediaQuery = window.matchMedia('(max-width: 760px)');
+
+      const syncMenuState = () => {
+        if (!mediaQuery.matches) {
+          header.classList.remove('is-menu-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          return;
+        }
+
+        const expanded = header.classList.contains('is-menu-open');
+        toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      };
+
+      toggle.addEventListener('click', () => {
+        if (!mediaQuery.matches) return;
+
+        header.classList.toggle('is-menu-open');
+        syncMenuState();
+      });
+
+      nav.addEventListener('click', (event) => {
+        if (!mediaQuery.matches) return;
+        if (!(event.target instanceof HTMLElement)) return;
+        if (!event.target.closest('a')) return;
+
+        header.classList.remove('is-menu-open');
+        syncMenuState();
+      });
+
+      mediaQuery.addEventListener('change', syncMenuState);
+      syncMenuState();
+    })();
+
+    (() => {
+      const searchRoot = document.querySelector('[data-search-root]');
+      if (!searchRoot) return;
+
+      const searchInput = searchRoot.querySelector('[data-search-input]');
+      const searchResults = searchRoot.querySelector('[data-search-results]');
+      const searchList = searchRoot.querySelector('[data-search-list]');
+      const searchHelper = searchRoot.querySelector('[data-search-helper]');
+      const searchIndexUrl = '{{ "index.json" | relURL }}';
+      let searchItems = [];
+      let hasLoaded = false;
+
+      const normalize = (value) => (value || '').toLowerCase().trim();
+
+      const escapeHtml = (value) => value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+
+      const closeResults = () => {
+        searchResults.hidden = true;
+      };
+
+      const openResults = () => {
+        searchResults.hidden = false;
+      };
+
+      const renderEmpty = (message) => {
+        searchList.innerHTML = '';
+        searchHelper.textContent = message;
+        openResults();
+      };
+
+      const renderResults = (items) => {
+        if (!items.length) {
+          renderEmpty('검색 결과가 없습니다. 다른 키워드로 시도해 주세요.');
+          return;
+        }
+
+        searchHelper.textContent = `${items.length}개의 결과`;
+        searchList.innerHTML = items.map((item) => `
+          <li>
+            <a class="search-result-item" href="${item.url}">
+              <span class="search-result-meta">${escapeHtml(item.section)} · ${escapeHtml(item.date || '')}</span>
+              <strong>${escapeHtml(item.title)}</strong>
+              <span>${escapeHtml(item.summary)}</span>
+            </a>
+          </li>
+        `).join('');
+        openResults();
+      };
+
+      const loadIndex = async () => {
+        if (hasLoaded) return;
+
+        try {
+          const response = await fetch(searchIndexUrl, { headers: { 'Accept': 'application/json' } });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          searchItems = await response.json();
+          hasLoaded = true;
+        } catch (error) {
+          renderEmpty('검색 인덱스를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        }
+      };
+
+      const runSearch = async () => {
+        const query = normalize(searchInput.value);
+
+        if (!query) {
+          closeResults();
+          return;
+        }
+
+        await loadIndex();
+
+        if (!hasLoaded) return;
+
+        const results = searchItems
+          .map((item) => {
+            const haystack = normalize(`${item.title} ${item.summary} ${item.content} ${item.section}`);
+            const title = normalize(item.title);
+            const summary = normalize(item.summary);
+            let score = 0;
+
+            if (title.includes(query)) score += 5;
+            if (summary.includes(query)) score += 3;
+            if (haystack.includes(query)) score += 1;
+
+            return { ...item, score };
+          })
+          .filter((item) => item.score > 0)
+          .sort((left, right) => right.score - left.score)
+          .slice(0, 6);
+
+        renderResults(results);
+      };
+
+      searchInput.addEventListener('focus', async () => {
+        await loadIndex();
+        if (!searchInput.value.trim()) {
+          renderEmpty('제목, 요약, 본문에서 검색합니다.');
+        }
+      });
+
+      searchInput.addEventListener('input', () => {
+        void runSearch();
+      });
+
+      searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          searchInput.blur();
+          closeResults();
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!searchRoot.contains(event.target)) {
+          closeResults();
+        }
+      });
     })();
   </script>
 </body>
