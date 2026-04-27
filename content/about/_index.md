@@ -61,8 +61,8 @@ social_links:
     label: "x.com/2rebcat"
     url: "https://x.com/2rebcat"
   - type: "linkedin"
-    label: "linkedin.com/in/your-handle"
-    url: "#"
+    label: "linkedin.com/in/sungpil-han-9431a4406"
+    url: "https://www.linkedin.com/in/sungpil-han-9431a4406/"
 ---
 
 웹 개발, 정보보안, 서버 운영을 따로 떨어진 분야로 보지 않고 하나의 흐름 안에서 이해하려고 노력합니다. 기능을 구현하는 일과 기록을 남기는 일을 같은 비중으로 다루며, 시간이 지나도 다시 읽히는 구조를 만드는 데 관심이 많습니다.
