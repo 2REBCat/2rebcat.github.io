@@ -55,7 +55,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.diff.outputs.added != ''
-        run: pip install requests pyyaml
+        run: pip install upload-post pyyaml
 
       - name: Notify upload-post.com
         if: steps.diff.outputs.added != ''

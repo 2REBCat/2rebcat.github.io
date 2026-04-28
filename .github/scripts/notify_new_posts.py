@@ -1,18 +1,17 @@
 """Notify upload-post.com about newly added blog posts.
 
 Reads a newline-separated list of added markdown paths from the env var
-ADDED_FILES, parses Hugo front matter, and POSTs a formatted message per file
-to the upload-post.com text endpoint.
+ADDED_FILES, parses Hugo front matter, and posts a formatted message per file
+via the official upload-post Python SDK.
 """
 
 import os
 import sys
 from pathlib import Path
 
-import requests
 import yaml
+from upload_post import UploadPostClient
 
-API_URL = "https://api.upload-post.com/api/upload_text"
 SITE_BASE = "https://2rebcat.github.io"
 BLOG_ROOT = Path("content/blog")
 INDEX_NAME = "_index.md"
@@ -43,15 +42,6 @@ def post_url_for(path: Path) -> str:
     return f"{SITE_BASE}/blog/{topic}/{slug}/"
 
 
-def upload(message: str, api_key: str, user: str, platforms: list[str]) -> None:
-    headers = {"Authorization": f"Apikey {api_key}"}
-    fields = [("user", user), ("title", message)]
-    fields.extend(("platform[]", p) for p in platforms)
-    resp = requests.post(API_URL, headers=headers, files=fields, timeout=30)
-    print(f"  status={resp.status_code} body={resp.text[:500]}")
-    resp.raise_for_status()
-
-
 def main() -> int:
     api_key = os.environ["UPLOAD_POST_API_KEY"].strip()
     user = os.environ["UPLOAD_POST_USER"].strip()
@@ -61,12 +51,14 @@ def main() -> int:
     if not user:
         print("UPLOAD_POST_USER is empty.", file=sys.stderr)
         return 1
-    print(f"Using upload-post user='{user}' (length={len(user)})")
+
     platforms = [
         p.strip()
         for p in os.environ.get("UPLOAD_POST_PLATFORMS", "x").split(",")
         if p.strip()
     ]
+    print(f"user={user!r} platforms={platforms}")
+
     added = [
         line.strip()
         for line in os.environ.get("ADDED_FILES", "").splitlines()
@@ -91,6 +83,8 @@ def main() -> int:
         return 0
 
     print(f"Found {len(targets)} new post(s): {[str(p) for p in targets]}")
+
+    client = UploadPostClient(api_key)
     failures = 0
     for path in targets:
         try:
@@ -103,7 +97,12 @@ def main() -> int:
             url = post_url_for(path)
             message = build_message(title, summary, url)
             print(f"Posting for {path}:")
-            upload(message, api_key, user, platforms)
+            response = client.upload_text(
+                title=message,
+                user=user,
+                platforms=platforms,
+            )
+            print(f"  response={response}")
         except Exception as e:
             failures += 1
             print(f"  ERROR for {path}: {e}", file=sys.stderr)
