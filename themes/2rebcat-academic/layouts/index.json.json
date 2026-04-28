@@ -2,7 +2,7 @@
 {{- with site.GetPage "/about" -}}
   {{- $pages = $pages | append (dict
     "title" .Title
-    "summary" ((.Summary | default (.Plain | truncate 180 "")) | plainify)
+    "summary" ((.Summary | default (.Plain | truncate 50 "")) | plainify | truncate 50 "")
     "content" (.Plain | truncate 400 "")
     "section" "About"
     "url" .RelPermalink
@@ -12,7 +12,7 @@
 {{- range site.RegularPages -}}
   {{- $pages = $pages | append (dict
     "title" .Title
-    "summary" ((.Params.summary | default .Summary) | plainify | truncate 180 "")
+    "summary" ((.Params.summary | default .Summary) | plainify | truncate 50 "")
     "content" (.Plain | truncate 400 "")
     "section" (cond .CurrentSection .CurrentSection.Title .Section)
     "url" .RelPermalink

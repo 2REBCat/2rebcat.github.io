@@ -33,7 +33,7 @@
     <div class="topic-grid">
       {{ range $topicSections }}
       <article class="topic-card">
-        <p class="section-kicker">{{ $.Params.topic_card_label | default "주제" }}</p>
+        <p class="section-kicker">{{ $.Params.topic_card_label | default "TOPIC" }}</p>
         <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         {{ with .Summary }}<p>{{ . }}</p>{{ end }}
         <div class="article-meta">

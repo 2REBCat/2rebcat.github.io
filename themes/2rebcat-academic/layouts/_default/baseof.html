@@ -139,6 +139,56 @@
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#39;');
 
+      const createExcerpt = (value, query, radius = 15) => {
+        const source = (value || '').replace(/\s+/g, ' ').trim();
+        if (!source) return '';
+
+        const sourceCharacters = Array.from(source);
+        const normalizedCharacters = Array.from(source.toLowerCase());
+        const normalizedQuery = Array.from((query || '').toLowerCase().trim());
+
+        if (!normalizedQuery.length) {
+          return sourceCharacters.slice(0, radius * 2).join('');
+        }
+
+        let matchIndex = -1;
+
+        for (let index = 0; index <= normalizedCharacters.length - normalizedQuery.length; index += 1) {
+          const segment = normalizedCharacters.slice(index, index + normalizedQuery.length).join('');
+          if (segment === normalizedQuery.join('')) {
+            matchIndex = index;
+            break;
+          }
+        }
+
+        if (matchIndex === -1) {
+          return sourceCharacters.slice(0, radius * 2).join('');
+        }
+
+        const start = Math.max(0, matchIndex - radius);
+        const end = Math.min(sourceCharacters.length, matchIndex + normalizedQuery.length + radius);
+        const prefix = start > 0 ? '...' : '';
+        const suffix = end < sourceCharacters.length ? '...' : '';
+
+        return `${prefix}${sourceCharacters.slice(start, end).join('')}${suffix}`;
+      };
+
+      const resolveExcerpt = (item, query) => {
+        const normalizedQuery = normalize(query);
+        const summary = (item.summary || '').replace(/\s+/g, ' ').trim();
+        const content = (item.content || '').replace(/\s+/g, ' ').trim();
+
+        if (summary && normalize(summary).includes(normalizedQuery)) {
+          return createExcerpt(summary, query);
+        }
+
+        if (content && normalize(content).includes(normalizedQuery)) {
+          return createExcerpt(content, query);
+        }
+
+        return createExcerpt(summary || content, query);
+      };
+
       const closeResults = () => {
         searchResults.hidden = true;
       };
@@ -153,7 +203,7 @@
         openResults();
       };
 
-      const renderResults = (items) => {
+      const renderResults = (items, query) => {
         if (!items.length) {
           renderEmpty('검색 결과가 없습니다. 다른 키워드로 시도해 주세요.');
           return;
@@ -165,7 +215,7 @@
             <a class="search-result-item" href="${item.url}">
               <span class="search-result-meta">${escapeHtml(item.section)} · ${escapeHtml(item.date || '')}</span>
               <strong>${escapeHtml(item.title)}</strong>
-              <span>${escapeHtml(item.summary)}</span>
+              <span>${escapeHtml(resolveExcerpt(item, query))}</span>
             </a>
           </li>
         `).join('');
@@ -214,7 +264,7 @@
           .sort((left, right) => right.score - left.score)
           .slice(0, 6);
 
-        renderResults(results);
+        renderResults(results, query);
       };
 
       searchInput.addEventListener('focus', async () => {
