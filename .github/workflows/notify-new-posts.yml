@@ -1,0 +1,67 @@
+name: Notify new blog posts
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'content/blog/**/*.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notify-new-posts
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine added blog files
+        id: diff
+        run: |
+          set -euo pipefail
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+          ZERO="0000000000000000000000000000000000000000"
+
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO" ]; then
+            echo "First push or unknown base; skipping diff."
+            ADDED=""
+          else
+            ADDED=$(git diff --name-only --diff-filter=A "$BEFORE" "$AFTER" -- 'content/blog/**/*.md' || true)
+          fi
+
+          {
+            echo "added<<__EOF__"
+            echo "$ADDED"
+            echo "__EOF__"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Added files:"
+          echo "$ADDED"
+
+      - name: Set up Python
+        if: steps.diff.outputs.added != ''
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.diff.outputs.added != ''
+        run: pip install requests pyyaml
+
+      - name: Notify upload-post.com
+        if: steps.diff.outputs.added != ''
+        env:
+          UPLOAD_POST_API_KEY: ${{ secrets.UPLOAD_POST_API_KEY }}
+          UPLOAD_POST_USER: ${{ secrets.UPLOAD_POST_USER }}
+          UPLOAD_POST_PLATFORMS: ${{ vars.UPLOAD_POST_PLATFORMS }}
+          ADDED_FILES: ${{ steps.diff.outputs.added }}
+        run: python .github/scripts/notify_new_posts.py
