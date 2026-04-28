@@ -45,7 +45,7 @@ def post_url_for(path: Path) -> str:
 
 def upload(message: str, api_key: str, user: str, platforms: list[str]) -> None:
     headers = {"Authorization": f"Apikey {api_key}"}
-    fields = [("user", user), ("title", message)]
+    fields = [("user", user), ("username", user), ("title", message)]
     fields.extend(("platform[]", p) for p in platforms)
     resp = requests.post(API_URL, headers=headers, files=fields, timeout=30)
     print(f"  status={resp.status_code} body={resp.text[:500]}")
