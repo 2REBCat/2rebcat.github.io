@@ -770,6 +770,7 @@ main.blog-layout:not(#top):not(#blog-home) .article-list {
   margin: 0 auto;
   display: grid;
   gap: 28px;
+  min-width: 0;
 }
 
 .post-header,
@@ -778,6 +779,7 @@ main.blog-layout:not(#top):not(#blog-home) .article-list {
   border-radius: var(--radius-lg);
   background: var(--panel);
   box-shadow: var(--shadow);
+  min-width: 0;
 }
 
 .post-header {
@@ -827,6 +829,7 @@ main.blog-layout:not(#top):not(#blog-home) .article-list {
 }
 
 .post-content pre {
+  max-width: 100%;
   overflow-x: auto;
   padding: 14px;
   border-radius: 16px;
@@ -835,9 +838,13 @@ main.blog-layout:not(#top):not(#blog-home) .article-list {
 }
 
 .post-content pre code {
+  display: block;
   padding: 0;
   background: transparent;
   color: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .empty-state-panel {
