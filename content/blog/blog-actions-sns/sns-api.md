@@ -176,5 +176,5 @@ print(result)
 
 ## 정리
 
-무료 범위에서 테스트를 시작하고, 글의 `title`과 `summary`만 잘 관리해도 블로그 새 글 알림 자동화는 충분히 만들 수 있었습니다. 핵심은 SNS 전용 데이터를 별도로 또 만들지 않고, Hugo front matter를 재사용하도록 흐름을 단순하게 유지하는 것입니다. 전체 코드는 [여기](https://github.com/2REBCat/2rebcat.github.io/blob/main/.github/scripts/notify_new_posts.py)에서 볼 수 있고, 링크가 아니어도 저장소 루트 기준 `.github/scripts/notify_new_posts.py` 경로로 직접 열어 같은 파일에 접근할 수 있습니다.
+무료 범위에서 테스트를 시작하고, 글의 `title`과 `summary`만 잘 관리해도 블로그 새 글 알림 자동화는 충분히 만들 수 있었습니다. 핵심은 SNS 전용 데이터를 별도로 또 만들지 않고, Hugo front matter를 재사용하도록 흐름을 단순하게 유지하는 것입니다. 전체 코드는 [여기](https://github.com/2REBCat/2rebcat.github.io/blob/main/.github/scripts/notify_new_posts.py)에서 볼 수 있고, 링크가 아니어도 저의 깃헙 블로그 저장소 루트 기준 `.github/scripts/notify_new_posts.py` 경로로 직접 열어 같은 파일에 접근할 수 있습니다.
 
