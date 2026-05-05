@@ -1,7 +1,7 @@
 ---
 title: "GitHub Actions로 새 글 알림 자동화하기"
-date: 2026-04-29T09:00:00+09:00
-lastmod: 2026-04-29T09:00:00+09:00
+date: 2026-05-06T08:59:16+09:00
+lastmod: 2026-05-06T08:59:16+09:00
 summary: "새 블로그 글이 추가되면 GitHub Actions가 이를 감지하고 upload-post API로 SNS 공지를 보내도록 구성한 흐름을 정리합니다."
 ---
 
