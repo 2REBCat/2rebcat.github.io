@@ -533,7 +533,6 @@ p {
 
 .hero-support {
   margin-top: 18px;
-  max-width: 760px;
 }
 
 .status-line {
@@ -1056,7 +1055,6 @@ main.blog-layout:not(#top):not(#blog-home) .article-list {
   .delay-4 {
     animation: none;
   }
-}
   .social-links a,
   .button,
   .site-nav a::after {
