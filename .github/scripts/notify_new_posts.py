@@ -54,7 +54,7 @@ def main() -> int:
 
     platforms = [
         p.strip()
-        for p in os.environ.get("UPLOAD_POST_PLATFORMS", "x").split(",")
+        for p in os.environ.get("UPLOAD_POST_PLATFORMS", "linkedin").split(",")
         if p.strip()
     ]
     print(f"user={user!r} platforms={platforms}")
